@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pizza Express - Presentación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100%;
+            display: none;
+            padding: 15px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .slide::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .slide::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .slide::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: 10px 0;
+        }
+
+        h1 {
+            color: #DB4428;
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #DB4428;
+            font-size: clamp(1.3em, 4vw, 1.6em);
+            margin-bottom: 15px;
+            border-bottom: 3px solid #FF9F1C;
+            padding-bottom: 8px;
+        }
+
+        .emoji {
+            font-size: clamp(2em, 8vw, 3em);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #505860;
+            font-size: clamp(1em, 3vw, 1.1em);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            line-height: 1.6;
+        }
+
+        li {
+            margin: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #212529;
+        }
+
+        li:before {
+            content: "🍕";
+            position: absolute;
+            left: 0;
+        }
+
+        .tech-list li:before {
+            content: "⚙️";
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #FF9F1C 0%, #FFB84D 100%);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            font-size: clamp(1em, 3vw, 1.1em);
+            margin-bottom: 6px;
+        }
+
+        .feature-card p {
+            font-size: clamp(0.85em, 2.5vw, 0.95em);
+            line-height: 1.4;
+        }
+
+        .controls {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+        }
+
+        button {
+            background: #DB4428;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: sticky;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #DB4428;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            margin-left: auto;
+            width: fit-content;
+            z-index: 100;
+        }
+
+        .highlight {
+            background: #FFE066;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #25976B 0%, #2EAE7D 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 8px;
+        }
+
+        .stat-box h3 {
+            font-size: clamp(1.3em, 4vw, 1.6em);
+            margin-bottom: 6px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            .slide-content {
+                padding: 15px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            z-index: 1001;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #FF9F1C;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current">1</span> / <span id="total">15</span>
+        </div>
+
+        <div class="slide-container">
+            <!-- Slide 1: Portada -->
+            <div class="slide active">
+                <div class="slide-content center-text">
+                    <div class="emoji">🍕</div>
+                    <h1>PIZZA EXPRESS</h1>
+                    <p class="subtitle">Sistema de Gestión de Pedidos de Pizzería</p>
+                    <p style="font-size: 1em; color: #505860; margin-top: 30px;">
+                        Proyecto Integral de Desarrollo de Software<br>
+                        Aplicación de Escritorio Java
+                    </p>
+                    <p style="margin-top: 30px; color: #666; font-size: 0.9em;">
+                        👆 Desliza o usa las flechas para navegar
+                    </p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Descripción del Proyecto -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>📋 ¿Qué es Pizza Express?</h2>
+                    <p style="font-size: 1em; line-height: 1.6; margin: 12px 0;">
+                        <strong>Pizza Express</strong> es una aplicación de escritorio completa que simula un sistema 
+                        real de punto de venta y gestión para pizzerías.
+                    </p>
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 12px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px; font-size: 1.1em;">🎯 ¿Para qué sirve?</h3>
+                        <ul style="font-size: 0.9em;">
+                            <li>Permitir a los clientes hacer pedidos digitalmente</li>
+                            <li>Gestionar el carrito de compras</li>
+                            <li>Aplicar descuentos y promociones</li>
+                            <li>Procesar pagos</li>
+                            <li>Administrar usuarios y roles</li>
+                            <li>Generar estadísticas de ventas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Características Principales -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>✨ Características Principales</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <h3>👤 Gestión de Usuarios</h3>
+                            <p>Sistema completo de registro y login</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🛒 Carrito de Compras</h3>
+                            <p>Persistente con edición en tiempo real</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🎟️ Sistema de Cupones</h3>
+                            <p>Descuentos porcentuales y fijos</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>💳 Múltiples Pagos</h3>
+                            <p>Tarjeta y efectivo</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>📊 Panel Admin</h3>
+                            <p>Estadísticas y reportes</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🔒 Seguridad</h3>
+                            <p>Contraseñas cifradas con BCrypt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Tecnologías -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🛠️ Tecnologías Utilizadas</h2>
+                    <ul class="tech-list">
+                        <li><span class="highlight">Java 8+</span> - Lenguaje principal</li>
+                        <li><span class="highlight">Swing</span> - Interfaz gráfica</li>
+                        <li><span class="highlight">Gson</span> - Persistencia JSON</li>
+                        <li><span class="highlight">BCrypt</span> - Cifrado de contraseñas</li>
+                        <li><span class="highlight">MVC</span> - Patrón de diseño</li>
+                        <li><span class="highlight">Java Logging</span> - Sistema de registros</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Cliente -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>👥 ¿Qué puede hacer un Cliente?</h2>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px;">1️⃣ Crear su cuenta</h3>
+                        <p style="font-size: 0.95em;">Validación de contraseña segura en tiempo real</p>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px;">2️⃣ Hacer pedidos</h3>
+                        <ul style="font-size: 0.95em;">
+                            <li>Ver menú con 8 pizzas diferentes</li>
+                            <li>Elegir tamaño (Chica, Mediana, Grande)</li>
+                            <li>Agregar al carrito</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px;">3️⃣ Gestionar carrito</h3>
+                        <ul style="font-size: 0.95em;">
+                            <li>Cambiar cantidades</li>
+                            <li>Eliminar productos</li>
+                            <li>Aplicar cupones</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Cupones -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🎟️ Sistema de Cupones</h2>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin: 15px 0;">
+                        <div style="background: #fff5e6; padding: 15px; border-radius: 8px; border: 2px solid #FF9F1C;">
+                            <h4 style="color: #FF9F1C;">📊 Porcentaje</h4>
+                            <p>Ejemplo: PIZZADESC10 = 10% off</p>
+                        </div>
+                        <div style="background: #e6f7f0; padding: 15px; border-radius: 8px; border: 2px solid #25976B;">
+                            <h4 style="color: #25976B;">💵 Cantidad Fija</h4>
+                            <p>Ejemplo: WELCOME5 = $5 de descuento</p>
+                        </div>
+                    </div>
+                    <h3 style="color: #DB4428; margin: 20px 0 10px;">Cupones disponibles:</h3>
+                    <ul style="font-size: 0.95em;">
+                        <li>PIZZADESC10: 10% off</li>
+                        <li>OFF50: $50 off (mín. $200)</li>
+                        <li>WELCOME5: $5 off</li>
+                        <li>MAS20: 20% off (mín. $300)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Admin -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>⚙️ Panel de Administración</h2>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px;">📊 Estadísticas</h3>
+                        <ul style="font-size: 0.95em;">
+                            <li>Ingresos totales y del mes</li>
+                            <li>Pedidos realizados</li>
+                            <li>Pizzas más vendidas (Top 5)</li>
+                            <li>Ventas por mes (últimos 6)</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h3 style="color: #DB4428; margin-bottom: 10px;">👥 Gestión de Usuarios</h3>
+                        <ul style="font-size: 0.95em;">
+                            <li>Ver lista completa</li>
+                            <li>Resetear contraseñas</li>
+                            <li>Eliminar cuentas</li>
+                            <li>Exportar datos en JSON</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: Seguridad -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🔐 Seguridad y Persistencia</h2>
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <h3>🔑</h3>
+                            <p>BCrypt<br>Factor 12</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>💾</h3>
+                            <p>Persistencia<br>JSON</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>📝</h3>
+                            <p>Logs del<br>Sistema</p>
+                        </div>
+                    </div>
+                    <ul style="font-size: 0.95em;">
+                        <li>Contraseñas: Solo hash BCrypt</li>
+                        <li>Archivos: usuarios.json, carrito.json, orders.json</li>
+                        <li>Directorio: ~/.pizzeria</li>
+                        <li>Validaciones: Emails y normalización</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Interfaz -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🎨 Diseño de Interfaz</h2>
+                    <ul style="font-size: 0.95em;">
+                        <li>Paleta de colores moderna</li>
+                        <li>Diseño responsive</li>
+                        <li>Feedback visual (notificaciones toast)</li>
+                        <li>Indicador de fuerza de contraseña</li>
+                        <li>Emojis nativos</li>
+                        <li>Tablas editables con spinners</li>
+                        <li>Validación inline</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Aspectos Técnicos -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>💡 Aspectos Técnicos</h2>
+                    <ul class="tech-list" style="font-size: 0.95em;">
+                        <li>SwingWorker para operaciones en background</li>
+                        <li>TableModel personalizado</li>
+                        <li>Renderers y Editors customizados</li>
+                        <li>Atomicidad de escritura</li>
+                        <li>Logging estructurado</li>
+                        <li>Separación de concerns (MVC)</li>
+                        <li>Gestión eficiente de memoria</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 11: Flujo -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🔄 Flujo de la Aplicación</h2>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                        <p style="font-size: 1.1em; line-height: 2; color: #212529;">
+                            <strong>1.</strong> Login / Registro →<br>
+                            <strong>2.</strong> Selección de pizzas →<br>
+                            <strong>3.</strong> Carrito (editar) →<br>
+                            <strong>4.</strong> Aplicar cupón →<br>
+                            <strong>5.</strong> Método de pago →<br>
+                            <strong>6.</strong> Confirmación →<br>
+                            <strong>7.</strong> Notificación de éxito
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 12: Usuarios de Prueba -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>📊 Usuarios de Prueba</h2>
+                    <div class="stats-container">
+                        <div class="stat-box" style="background: linear-gradient(135deg, #DB4428 0%, #FF5733 100%);">
+                            <h3>👨‍💼</h3>
+                            <p><strong>admin</strong><br>admin123</p>
+                        </div>
+                        <div class="stat-box" style="background: linear-gradient(135deg, #FF9F1C 0%, #FFB84D 100%);">
+                            <h3>👤</h3>
+                            <p><strong>demo</strong><br>demo123</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 13: Conclusiones -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🎯 Conclusiones</h2>
+                    <ul style="font-size: 0.95em;">
+                        <li>Sistema completo y funcional</li>
+                        <li>Arquitectura escalable</li>
+                        <li>Seguridad robusta</li>
+                        <li>Interfaz intuitiva</li>
+                        <li>Persistencia confiable</li>
+                        <li>Panel administrativo potente</li>
+                        <li>Código limpio y documentado</li>
+                    </ul>
+                    <div style="background: linear-gradient(135deg, #25976B 0%, #2EAE7D 100%); padding: 15px; border-radius: 10px; margin-top: 20px; color: white; text-align: center;">
+                        <h3 style="font-size: 1.3em;">✅ Listo para producción</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: Mejoras Futuras -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>🚀 Mejoras Futuras</h2>
+                    <ul style="font-size: 0.95em;">
+                        <li>Base de datos: MySQL/PostgreSQL</li>
+                        <li>API REST para móvil</li>
+                        <li>Impresión de tickets</li>
+                        <li>Notificaciones Email/SMS</li>
+                        <li>Tracking en tiempo real</li>
+                        <li>Reportes con gráficas</li>
+                        <li>Builder de pizzas personalizado</li>
+                        <li>Gestión multi-sucursal</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 15: Gracias -->
+            <div class="slide">
+                <div class="slide-content center-text">
+                    <div class="emoji">🍕</div>
+                    <h1>¡GRACIAS!</h1>
+                    <p class="subtitle">Pizza Express - Sistema de Gestión</p>
+                    <div style="margin-top: 30px; font-size: 1.1em; color: #505860;">
+                        <p>¿Preguntas?</p>
+                        <p style="margin-top: 15px;">📧 Contacto disponible</p>
+                    </div>
+                    <div style="margin-top: 30px; background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                        <p style="font-size: 0.95em; color: #212529;">
+                            <strong>Tecnologías:</strong> Java • Swing • Gson • BCrypt<br>
+                            <strong>Líneas de código:</strong> ~2500<br>
+                            <strong>Proyecto completo</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="changeSlide(-1)" disabled>← Anterior</button>
+            <button id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let startX = 0;
+        let currentX = 0;
+
+        document.getElementById('total').textContent = totalSlides;
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            
+            if (n >= totalSlides) {
+                currentSlide = totalSlides - 1;
+            } else if (n < 0) {
+                currentSlide = 0;
+            } else {
+                currentSlide = n;
+            }
+            
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            updateProgress();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Touch navigation
+        const slideContainer = document.querySelector('.slide-container');
+        
+        slideContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        slideContainer.addEventListener('touchmove', (e) => {
+            currentX = e.touches[0].clientX;
+        });
+
+        slideContainer.addEventListener('touchend', (e) => {
+            const diff = startX - currentX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    changeSlide(1);
+                } else {
+                    changeSlide(-1);
+                }
+            }
+        });
+
+        showSlide(0);
+        updateProgress();
+    </script>
+</body>
+</html>
